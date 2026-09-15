@@ -4,6 +4,8 @@ A calculator with a **React** frontend and a **Go** REST API backend. The UI is 
 
 **Operations:** addition, subtraction, multiplication, division, exponentiation, square root, percentage, remainder.
 
+**Live demo:** https://calculator.matiasbarcelo.com (frontend on GitHub Pages) · API: https://sezzle-calculator-api.fly.dev/api/v1/health (Fly.io). The API scales to zero when idle, so the first calculation after a pause can take a couple of seconds.
+
 ```
 .
 ├── backend/              Go REST API (standard library only)
@@ -61,7 +63,7 @@ After changing code, run `docker compose up --build -d` again to rebuild.
 
 ### Deployment
 
-The app has been tested locally with Docker Compose and at phone widths in the browser. I plan to deploy it on my personal site to confirm it works on real mobile devices.
+The app has been tested locally with Docker Compose and at phone widths in the browser, and is deployed under my personal domain at https://calculator.matiasbarcelo.com so I can confirm it works on real mobile devices.
 
 **Frontend → GitHub Pages** at `https://calculator.matiasbarcelo.com`, via [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml). Every push to `technical-assessment` runs the backend and frontend tests, builds the React app, and publishes it.
 

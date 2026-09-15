@@ -1785,5 +1785,148 @@ Go ahead and remove the manual from the repo, create a repo on my account and li
 - `PowerShell` — Restore local PDF from old commit and list stashes
 - `PowerShell` — Verify restore, drop stash, prune old history
 - `PowerShell` — Write filtered transcript into docs and check ignores
+- `Grep` — ^## User$
+- `Read` — C:\Users\PC01\Documents\Coding\Sezzle_Calc_Casio_SL-200TE\docs\CONVERSATION.md
+- `Write` — C:\Users\PC01\AppData\Local\Temp\claude\C--Users-PC01-Documents-Coding-Sezzle-Calc-Casio-SL-200TE\3d547d51-81e1-4db0-bafc-e9f24490eeec\scratchpad\commitmsg2.txt
+- `PowerShell` — Commit transcript and README update, recheck GitHub auth
+
+</details>
+
+## Assistant
+
+I removed the manual, added the conversation and the deployment note, and committed. I couldn't create the GitHub repo, because GitHub CLI's saved login for `matiasbarcelo` has expired. I can't sign in for you.
+
+**Done (commit `124c41d` on `technical-assessment`):**
+- **Manual removed from history:** removing it in a new commit would have left it in the history, and pushing would upload it anyway. Nothing had been pushed, so I rewrote the two local commits to remove it entirely. It's now in no commit on any branch.
+  - **New commit IDs:** `master` is now `7e26755` and the full-stack commit is `3bbf4cc`.
+  - **Your local copy:** the rewrite deleted the file from the folder too, so I restored it from the old commit and checked it's the same size. It's still on your disk, and `*.pdf` is now in `.gitignore` so it can't be committed again.
+- **Conversation:** it's in [docs/CONVERSATION.md](docs/CONVERSATION.md), with your prompts and my replies word for word. Tool calls are listed one line each, and their raw output is left out. I read it through before committing: it has no credentials, and the Sezzle email's text isn't in it. The README's project layout lists it as the prompts used.
+- **Deployment note:** a new **Deployment** section in the [README](README.md) says it's been tested locally and at phone widths, and that you plan to deploy it on your personal site to confirm it works on real mobile devices.
+
+**To finish, I need two things from you:**
+1. **Sign in to GitHub again** in a terminal (the Terminal panel works), then tell me when it's done:
+   ```bash
+   gh auth login -h github.com --web
+   ```
+2. **Choose the repo's name and visibility.**
+   - **Name:** I'd suggest `sezzle-calculator`.
+   - **Visibility:** **public** is simplest for reviewers opening your link, but it publishes the code and the conversation transcript. **Private** means inviting Sezzle's reviewers as collaborators.
+
+Once you're signed in, I'll create the repo, add it as `origin`, and push both branches with `technical-assessment` as the default. Tell me if you'd rather I only link it without pushing yet.
+
+---
+
+## User
+
+It should work now. Also, just make it deployable with github pages using my matiasbarcelo.com domain.
+
+## Assistant
+
+I'll check the GitHub login, then how matiasbarcelo.com is currently served. That decides how this app should sit under your domain.
+
+<details><summary>Tool calls</summary>
+
+- `PowerShell` — Check gh auth, personal site repo, CNAME and DNS
+- `PowerShell` — Inspect user's GitHub Pages site and repos
+- `Bash` — Find which repo serves matiasbarcelo.com via Pages
+- `Edit` — C:\Users\PC01\Documents\Coding\Sezzle_Calc_Casio_SL-200TE\frontend\src\api.js
+- `Write` — C:\Users\PC01\Documents\Coding\Sezzle_Calc_Casio_SL-200TE\frontend\vite.config.js
+- `Write` — C:\Users\PC01\Documents\Coding\Sezzle_Calc_Casio_SL-200TE\.github\workflows\deploy-pages.yml
+- `Edit` — C:\Users\PC01\Documents\Coding\Sezzle_Calc_Casio_SL-200TE\README.md
+- `Edit` — C:\Users\PC01\Documents\Coding\Sezzle_Calc_Casio_SL-200TE\README.md
+- `PowerShell` — Run tests and verify API URL is embedded in build
+- `Write` — C:\Users\PC01\AppData\Local\Temp\claude\C--Users-PC01-Documents-Coding-Sezzle-Calc-Casio-SL-200TE\3d547d51-81e1-4db0-bafc-e9f24490eeec\scratchpad\commitmsg3.txt
+- `PowerShell` — Commit deploy setup and check repo name is free
+- `PowerShell` — Create public GitHub repo, push branches, set default
+- `Bash` — Enable Pages with Actions build and custom domain
+- `PowerShell` — Watch the Pages workflow run to completion
+- `Bash` — Check subdomain DNS and Pages URLs
+- `Edit` — C:\Users\PC01\Documents\Coding\Sezzle_Calc_Casio_SL-200TE\.github\workflows\deploy-pages.yml
+- `PowerShell` — Commit CI tweak, push, and watch the run
+- `PowerShell` — Check flyctl install, login, and existing apps
+- `Write` — C:\Users\PC01\Documents\Coding\Sezzle_Calc_Casio_SL-200TE\backend\fly.toml
+- `Edit` — C:\Users\PC01\Documents\Coding\Sezzle_Calc_Casio_SL-200TE\README.md
+- `PowerShell` — Commit and push Fly.io config
+
+</details>
+
+## Assistant
+
+The repo is live on GitHub, and GitHub Pages deploys automatically with passing tests. Two steps only you can do remain: a DNS record, and logging in to Fly.io.
+
+## Done
+- **Repo:** https://github.com/matiasbarcelo/sezzle-calculator is public, with both branches pushed. The default is `technical-assessment`, so that's what reviewers see. `origin` is linked, and no commit on either branch contains the manual.
+- **GitHub Pages:** it's enabled with the custom domain `calculator.matiasbarcelo.com`. [.github/workflows/deploy-pages.yml](.github/workflows/deploy-pages.yml) runs on every push:
+  - Go tests, then front-end tests with coverage;
+  - builds the React app;
+  - publishes it.
+
+  I watched two runs finish green, and https://matiasbarcelo.github.io/sezzle-calculator/ already forwards to the custom domain.
+- **Fly.io config:** [backend/fly.toml](backend/fly.toml) defines the app `sezzle-calculator-api` in the Dallas region. It stops when idle and starts on the next request. It checks `/api/v1/health`, and it only accepts browser requests from `https://calculator.matiasbarcelo.com`.
+- **API address:** the front end reads its API address from a GitHub setting at build time. A browser at matiasbarcelo.com can't call a `/api` path on GitHub Pages.
+- **README:** a new Deployment section covers Pages, Fly.io and DNS.
+
+**Why a subdomain:** `matiasbarcelo.com` itself is served by your private `personal_website` repo. Putting the calculator there would mean replacing that site or copying the build into that repo, so it lives at **calculator.matiasbarcelo.com** instead.
+
+## What you need to do
+1. **Add a DNS record** wherever you manage matiasbarcelo.com. It's missing right now, so the subdomain doesn't load yet:
+
+   | Type | Name / Host | Value |
+   |---|---|---|
+   | CNAME | `calculator` | `matiasbarcelo.github.io` |
+
+   Once it takes effect, usually within minutes, GitHub issues the HTTPS certificate automatically.
+
+2. **Log in to Fly.io** in a terminal:
+   ```bash
+   C:\Users\PC01\.fly\bin\flyctl.exe auth login
+   ```
+
+Tell me when you've logged in. I'll then:
+- create the Fly app and deploy the backend;
+- point the GitHub `API_URL` setting at `https://sezzle-calculator-api.fly.dev/api/v1`;
+- re-run the Pages deploy;
+- test real calculations end to end on the live site.
+
+Until then, the live page loads, but every calculation shows E because it has no API to call.
+
+Creating the Fly app may count against your Fly plan. With a 256 MB machine that stops when idle, it's usually free or a few cents a month.
+
+---
+
+## User
+
+logged into fly, deploy the backend
+
+<details><summary>Tool calls</summary>
+
+- `PowerShell` — Confirm Fly login and create the API app
+- `PowerShell` — Deploy the Go backend to Fly.io
+
+</details>
+
+## Assistant
+
+Deployed. Testing the live API, including the CORS header the Pages site needs.
+
+<details><summary>Tool calls</summary>
+
+- `Bash` — Test live Fly API endpoints and CORS
+- `PowerShell` — Set API_URL variable and redeploy Pages
+- `Bash` — Check subdomain DNS and inspect deployed Pages bundle
+- `navigate` — https://calculator.matiasbarcelo.com
+- `Bash` — Check custom domain HTTP/HTTPS and Pages cert state
+- `Bash` — Re-save custom domain to trigger certificate issuance
+- `Bash` — Poll until HTTPS serves the Pages site
+- `Bash` — Enforce HTTPS on the Pages site
+- `navigate` — https://calculator.matiasbarcelo.com
+- `javascript_tool` — javascript_exec
+- `resize_window`
+- `computer` — screenshot
+- `javascript_tool` — javascript_exec
+- `resize_window`
+- `Edit` — C:\Users\PC01\Documents\Coding\Sezzle_Calc_Casio_SL-200TE\README.md
+- `Edit` — C:\Users\PC01\Documents\Coding\Sezzle_Calc_Casio_SL-200TE\README.md
+- `PowerShell` — Refresh transcript, commit README links, push
 
 </details>
