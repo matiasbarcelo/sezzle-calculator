@@ -1,0 +1,31 @@
+# Fly.io config for the calculator API.
+# Deploy from this directory: fly deploy
+app = "sezzle-calculator-api"
+primary_region = "dfw"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PORT = "8080"
+  # The GitHub Pages frontend; browsers are only allowed to call the API from here.
+  ALLOWED_ORIGIN = "https://calculator.matiasbarcelo.com"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  # Scale to zero when idle; the first request after a pause wakes it up.
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [[http_service.checks]]
+    grace_period = "5s"
+    interval = "30s"
+    timeout = "5s"
+    method = "GET"
+    path = "/api/v1/health"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"

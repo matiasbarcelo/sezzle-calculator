@@ -65,11 +65,16 @@ The app has been tested locally with Docker Compose and at phone widths in the b
 
 **Frontend → GitHub Pages** at `https://calculator.matiasbarcelo.com`, via [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml). Every push to `technical-assessment` runs the backend and frontend tests, builds the React app, and publishes it.
 
-GitHub Pages only serves static files, so the Go API has to be hosted separately (any container host works; `backend/Dockerfile` is ready to deploy). To connect them:
+GitHub Pages only serves static files, so the Go API is hosted separately.
 
-1. Deploy the backend with `ALLOWED_ORIGIN=https://calculator.matiasbarcelo.com`.
-2. In the GitHub repo, set the Actions variable `API_URL` to the API's base URL, e.g. `https://<api-host>/api/v1`.
-3. Re-run the workflow (or push). The frontend is built with `VITE_API_URL` pointing at the API.
+**Backend → Fly.io** at `https://sezzle-calculator-api.fly.dev`, configured in [`backend/fly.toml`](backend/fly.toml) (builds `backend/Dockerfile`, scales to zero when idle, health check on `/api/v1/health`, CORS limited to the Pages domain):
+
+```bash
+cd backend
+fly deploy
+```
+
+The frontend finds the API through the repository Actions variable `API_URL` (`https://sezzle-calculator-api.fly.dev/api/v1`), which is passed to the build as `VITE_API_URL`. After changing it, re-run the workflow.
 
 DNS: `calculator.matiasbarcelo.com` needs a `CNAME` record pointing to `matiasbarcelo.github.io`.
 
