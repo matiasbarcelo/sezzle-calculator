@@ -1928,5 +1928,36 @@ Deployed. Testing the live API, including the CORS header the Pages site needs.
 - `Edit` — C:\Users\PC01\Documents\Coding\Sezzle_Calc_Casio_SL-200TE\README.md
 - `Edit` — C:\Users\PC01\Documents\Coding\Sezzle_Calc_Casio_SL-200TE\README.md
 - `PowerShell` — Refresh transcript, commit README links, push
+- `Grep` — @gmail|gho_|access token|greenhouse.io
+- `PowerShell` — Watch final deploy run and check live site
+
+</details>
+
+## Assistant
+
+The backend is running on Fly.io, and the full app is live at **https://calculator.matiasbarcelo.com**.
+
+- **Backend:** https://sezzle-calculator-api.fly.dev. The live API returns correct results and the proper 422 for divide by zero. It only accepts browser requests from `https://calculator.matiasbarcelo.com`.
+- **Frontend:** the GitHub setting `API_URL` now points at the Fly API, and the Pages site was rebuilt. I checked that the published files contain the API address.
+- **Your DNS record** took effect. HTTPS wasn't serving at first, so I re-saved the custom domain to prompt GitHub, and the certificate came through within minutes. The site now loads over HTTPS.
+- **HTTPS enforcement:** I also turned on GitHub's "Enforce HTTPS" setting. A plain `http://` request still returned the page rather than redirecting when I checked, so GitHub may take a few minutes to apply it.
+- **Tested live** in the browser at `https://calculator.matiasbarcelo.com`: `12 + 30 =` → 42, `100 % 5 =` → 5, `√ 81 =` → 9, `7 ÷ 2 =` → 3.5, and `1 ÷ 0 =` → E. Each result came from the Fly API. At phone width (375px) nothing scrolls sideways, but I couldn't get a screenshot, so it's still worth a look on your actual phone.
+- **README:** live demo links are at the top, and the Deployment section says the app runs under your domain. The conversation transcript is refreshed to include today's work. The final push passed tests, build and deploy.
+
+**Keep in mind:**
+- **Cold start:** the API stops when idle to save cost, so the first calculation after a quiet period takes a couple of seconds while it wakes up. The README mentions this.
+- **Updating the backend:** pushing to GitHub redeploys only the frontend. After backend changes, run `fly deploy` from `backend/`.
+
+For your Greenhouse submission, the repo is https://github.com/matiasbarcelo/sezzle-calculator. The prompts you used are in `docs/CONVERSATION.md`.
+
+---
+
+## User
+
+Alright, update the conversation to this far including the response and proceed to commit to the branch so I can submit.
+
+<details><summary>Tool calls</summary>
+
+- `PowerShell` — Regenerate transcript and verify it's current
 
 </details>
