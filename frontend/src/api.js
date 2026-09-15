@@ -1,6 +1,8 @@
 // Client for the Go calculator API (see backend/README.md).
 // In dev, Vite proxies /api to the backend; in Docker, nginx does.
-const API_BASE = import.meta.env.VITE_API_URL ?? '/api/v1';
+// Static hosting (GitHub Pages) sets VITE_API_URL to the hosted API,
+// e.g. https://api.example.com/api/v1, at build time.
+const API_BASE = (import.meta.env.VITE_API_URL || '/api/v1').replace(/\/+$/, '');
 
 export class CalculatorApiError extends Error {
   constructor(message, status = null) {

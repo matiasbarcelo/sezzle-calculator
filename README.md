@@ -21,6 +21,7 @@ A calculator with a **React** frontend and a **Go** REST API backend. The UI is 
 ├── Dockerfile            builds the frontend and serves it with nginx
 ├── nginx.conf            serves the app, proxies /api/ to the backend
 ├── docker-compose.yml    runs frontend + backend together
+├── .github/workflows/    CI: tests both layers, deploys the frontend to GitHub Pages
 └── docs/
     ├── CONVERSATION.md     AI-assisted development transcript (prompts used)
     └── CALCULATOR_BEHAVIOR.md  notes on the original Casio SL-200TE
@@ -61,6 +62,16 @@ After changing code, run `docker compose up --build -d` again to rebuild.
 ### Deployment
 
 The app has been tested locally with Docker Compose and at phone widths in the browser. I plan to deploy it on my personal site to confirm it works on real mobile devices.
+
+**Frontend → GitHub Pages** at `https://calculator.matiasbarcelo.com`, via [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml). Every push to `technical-assessment` runs the backend and frontend tests, builds the React app, and publishes it.
+
+GitHub Pages only serves static files, so the Go API has to be hosted separately (any container host works; `backend/Dockerfile` is ready to deploy). To connect them:
+
+1. Deploy the backend with `ALLOWED_ORIGIN=https://calculator.matiasbarcelo.com`.
+2. In the GitHub repo, set the Actions variable `API_URL` to the API's base URL, e.g. `https://<api-host>/api/v1`.
+3. Re-run the workflow (or push). The frontend is built with `VITE_API_URL` pointing at the API.
+
+DNS: `calculator.matiasbarcelo.com` needs a `CNAME` record pointing to `matiasbarcelo.github.io`.
 
 ---
 
