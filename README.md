@@ -20,7 +20,10 @@ A calculator with a **React** frontend and a **Go** REST API backend. The UI is 
 │       └── useCalculator.js     React hook wiring state + API
 ├── Dockerfile            builds the frontend and serves it with nginx
 ├── nginx.conf            serves the app, proxies /api/ to the backend
-└── docker-compose.yml    runs frontend + backend together
+├── docker-compose.yml    runs frontend + backend together
+└── docs/
+    ├── CONVERSATION.md     AI-assisted development transcript (prompts used)
+    └── CALCULATOR_BEHAVIOR.md  notes on the original Casio SL-200TE
 ```
 
 ---
@@ -54,6 +57,10 @@ docker compose down
 ```
 
 After changing code, run `docker compose up --build -d` again to rebuild.
+
+### Deployment
+
+The app has been tested locally with Docker Compose and at phone widths in the browser. I plan to deploy it on my personal site to confirm it works on real mobile devices.
 
 ---
 

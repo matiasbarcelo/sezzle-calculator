@@ -4,3 +4,4 @@ coverage
 coverage.out
 *.local
 .DS_Store
+*.pdf
