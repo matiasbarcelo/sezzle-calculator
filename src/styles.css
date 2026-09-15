@@ -1,0 +1,422 @@
+:root {
+  --silver-hi: #f2f3f5;
+  --silver: #d3d6da;
+  --silver-lo: #a9adb3;
+  --silver-edge: #8d9197;
+
+  --panel-slate: #5b6477;
+  --panel-dark: #33363d;
+
+  --lcd-bg: #bfc6ae;
+  --lcd-bg-lo: #a9b198;
+  --lcd-on: #1d211c;
+  --lcd-off: rgba(29, 33, 28, 0.06);
+
+  --key-digit: #6c7077;
+  --key-dark: #3d4046;
+  --key-red: #d4465b;
+  --key-tax: #2b8f7b;
+  --key-text: #f4f5f6;
+  --print: #53575e;
+
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #eceef0;
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 24px 16px;
+}
+
+/* ---------- Body ---------- */
+
+/* Everything inside is laid out at a 380px base size, then scaled up as a whole
+   so the tiny LCD and case lettering stay legible. */
+.calculator {
+  width: 380px;
+  zoom: 1.6;
+  display: flex;
+  flex-direction: column;
+  filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.22));
+}
+
+@media (max-width: 660px) {
+  .calculator {
+    zoom: 1.25;
+  }
+}
+
+@media (max-width: 520px) {
+  .calculator {
+    zoom: 1;
+    width: 100%;
+  }
+}
+
+.leaf {
+  background: linear-gradient(160deg, var(--silver-hi) 0%, var(--silver) 45%, var(--silver-lo) 100%);
+  border: 1px solid var(--silver-edge);
+  border-radius: 22px;
+  padding: 12px;
+}
+
+.hinges {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 34px;
+  height: 10px;
+  margin: -3px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.hinge {
+  width: 46px;
+  height: 100%;
+  border-radius: 5px;
+  background: linear-gradient(180deg, #fafbfc, #b7bbc1 55%, #8e9298);
+  border: 1px solid var(--silver-edge);
+}
+
+/* ---------- Lid ---------- */
+
+.lid-panel {
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--panel-dark);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.lid-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 12px 8px;
+  background: linear-gradient(180deg, #66708a, var(--panel-slate));
+}
+
+/* CASIO on the left under the LCD; TAX & EXCHANGE shares its row on the right. */
+.brand-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2px;
+  align-items: center;
+  min-height: 20px;
+}
+
+.brand {
+  color: #c9ccd3;
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 1.5px;
+  font-style: italic;
+}
+
+.lid-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 14px;
+  min-height: 60px;
+  background: linear-gradient(180deg, #3a3e46, var(--panel-dark));
+}
+
+.solar-panel {
+  width: 88px;
+  height: 26px;
+  background: linear-gradient(180deg, #16171a, #050506);
+  border: 1px solid #55585e;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.solar-panel span {
+  color: #9a9da3;
+  font-size: 5.5px;
+  letter-spacing: 0.4px;
+}
+
+.tax-exchange {
+  font-family: Georgia, 'Times New Roman', serif;
+  color: #b9bdc5;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+.model-line {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.model {
+  color: #b9bdc5;
+  font-size: 8px;
+}
+
+.dual-leaf {
+  font-family: Georgia, 'Times New Roman', serif;
+  color: #d3d6dc;
+  font-size: 13px;
+  position: relative;
+}
+
+.dual-leaf::before {
+  content: '';
+  position: absolute;
+  left: -2px;
+  right: -8px;
+  top: 55%;
+  height: 7px;
+  background: #17181b;
+  transform: skewX(-35deg) rotate(-8deg);
+  z-index: -1;
+}
+
+/* ---------- LCD ---------- */
+
+.lcd {
+  width: 262px;
+  display: grid;
+  grid-template-columns: 9px 1fr;
+  column-gap: 4px;
+  padding: 6px 8px 6px 6px;
+  background: linear-gradient(180deg, var(--lcd-bg), var(--lcd-bg-lo));
+  border-radius: 3px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.35);
+}
+
+.lcd-flags {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.flag,
+.ann {
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--lcd-off);
+}
+
+.flag.on,
+.ann.on {
+  color: var(--lcd-on);
+}
+
+/* Top row spans the whole LCD. Columns mirror the body below: E column, gap, 8 digits.
+   TAX+ TAX− C1 C2 C3 SET EXCH % spread from above E up to the operator boxes;
+   the four boxes (÷ × + −) cover the last two digits, starting a little left of digit 6
+   and ending flush with the right edge of digit 7. */
+.lcd-annunciators {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 9px 4px repeat(8, 1fr);
+  align-items: start;
+  height: 10px;
+}
+
+.ann-group {
+  grid-column: 1 / 9;
+  display: flex;
+  justify-content: space-between;
+  padding-right: 16px;
+}
+
+.ann-operators {
+  grid-column: 9 / 11;
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+  margin-left: -6px;
+}
+
+.ann {
+  font-size: 7px;
+}
+
+/* TAX− whose two parts light independently: "TAX" alone marks the stored tax rate. */
+.ann-split .on {
+  color: var(--lcd-on);
+}
+
+.ann-operator {
+  flex: none;
+  width: 13px;
+  height: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1px;
+  font: 700 8px/1 'Helvetica Neue', Arial, sans-serif;
+  background: var(--lcd-off);
+  color: transparent;
+}
+
+.ann-operator.on {
+  background: var(--lcd-on);
+  color: var(--lcd-bg);
+}
+
+.lcd-digits {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+}
+
+.lcd-digit {
+  width: 100%;
+  display: block;
+}
+
+.seg-on {
+  fill: var(--lcd-on);
+}
+
+.seg-off {
+  fill: var(--lcd-off);
+}
+
+/* ---------- Keypad ---------- */
+
+.base {
+  padding: 16px 12px 18px;
+}
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(4, 50px);
+  column-gap: 7px;
+  padding: 10px 18px 8px 10px;
+  border-radius: 14px;
+  background: linear-gradient(160deg, #e7e9ec, #c4c8cd);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25), 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.key-cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 4px;
+}
+
+.key {
+  width: 100%;
+  height: 30px;
+  flex: none;
+  border: none;
+  border-radius: 12px;
+  color: var(--key-text);
+  font: 600 17px/1 'Helvetica Neue', Arial, sans-serif;
+  cursor: pointer;
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.25),
+    0 2px 0 rgba(0, 0, 0, 0.45),
+    0 3px 4px rgba(0, 0, 0, 0.25);
+  transition: transform 60ms, box-shadow 60ms;
+}
+
+.key:active {
+  transform: translateY(2px);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.2),
+    0 0 0 rgba(0, 0, 0, 0.45),
+    0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.key:focus-visible {
+  outline: 2px solid #2b6fd6;
+  outline-offset: 2px;
+}
+
+/* Top edge lines up with the row-3 keys, bottom edge with the row-4 keys. */
+.key-cell-tall .key {
+  height: calc(100% - 16px);
+}
+
+.key-small {
+  font-size: 11px;
+  letter-spacing: -0.2px;
+}
+
+.key-digit {
+  background: linear-gradient(180deg, #7b7f86, var(--key-digit));
+}
+
+.key-dark {
+  background: linear-gradient(180deg, #4b4e55, var(--key-dark));
+}
+
+.key-red {
+  background: linear-gradient(180deg, #e25a6d, var(--key-red));
+}
+
+.key-tax {
+  background: linear-gradient(180deg, #37a18b, var(--key-tax));
+}
+
+.key-note,
+.key-tag,
+.key-under {
+  position: absolute;
+  font-size: 6.5px;
+  font-weight: 700;
+  color: var(--print);
+  white-space: nowrap;
+  letter-spacing: 0.2px;
+}
+
+.key-note {
+  top: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.key-tag {
+  right: -11px;
+  bottom: 6px;
+  font-size: 7px;
+}
+
+.key-under {
+  left: 50%;
+  bottom: -8px;
+  transform: translateX(-50%);
+}
+
+/* ---------- Preview controls (dev only) ---------- */
+
+.previews {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.previews button {
+  font: 13px system-ui, sans-serif;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #b8bcc2;
+  background: #fff;
+  cursor: pointer;
+}
