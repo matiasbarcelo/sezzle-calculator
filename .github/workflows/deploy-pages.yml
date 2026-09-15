@@ -26,6 +26,7 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: backend/go.mod
+          cache: false # standard library only, nothing to cache
       - name: Backend tests
         working-directory: backend
         run: go test ./... -cover
