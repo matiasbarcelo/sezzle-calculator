@@ -34,6 +34,8 @@ const ALL_ON = {
   exchange: true,
   percent: true,
   set: true,
+  power: true,
+  sqrt: true,
 };
 
 /**
@@ -55,6 +57,8 @@ export default function Display(props) {
     tax = false, // lights only the "TAX" part of TAX− (with %) when showing the stored tax rate
     percent = false,
     set = false, // shown after holding % (SET) to enter rate-setting mode
+    power = false, // "^" above E
+    sqrt = false, // "√" below E
   } = props.allOn ? ALL_ON : props;
   const annunciators = [
     ['TAX+', taxPlus],
@@ -105,7 +109,9 @@ export default function Display(props) {
       </div>
 
       <div className="lcd-flags">
+        <span className={power ? 'flag on' : 'flag'}>^</span>
         <span className={error ? 'flag on' : 'flag'}>E</span>
+        <span className={sqrt ? 'flag on' : 'flag'}>√</span>
       </div>
 
       <div className="lcd-digits">
